@@ -1,3 +1,7 @@
+<script context="module" lang="ts">
+  export const prerender = true;
+</script>
+
 <script lang="ts">
   import Button from "$lib/components/Button.svelte";
   import Field from "$lib/components/Field.svelte";
@@ -13,9 +17,16 @@
   <p>Here you can re-login if you haven't created your thought already</p>
 
   <Field props={{ type: "email", label: "Email" }} bind:value={email} />
-  <Field props={{ type: "password", label: "Password" }} bind:value={password} />
+  <Field
+    props={{ type: "password", label: "Password" }}
+    bind:value={password}
+  />
   <Button
-    props={{ variant: "primary", type: "submit", disabled: !email || !password || $auth.loading }}
+    props={{
+      variant: "primary",
+      type: "submit",
+      disabled: !email || !password || $auth.loading
+    }}
   >
     {$auth.loading ? "Logging in..." : "Login"}
   </Button>
