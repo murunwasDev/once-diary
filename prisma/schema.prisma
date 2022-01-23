@@ -8,45 +8,22 @@ datasource db {
 }
 
 model User {
-  id             String    @id @default(cuid())
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
   email          String
   password       String
-  tokenVersion   Int       @default(0)
-  hasCreatedPost Boolean   @default(false)
-  comments       Comment[]
-  likes          Like[]
+  tokenVersion   Int      @default(0)
+  hasCreatedPost Boolean  @default(false)
   post           Post?
 }
 
 model Post {
-  id        String    @id @default(cuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   title     String
   content   String
-  userId    String    @unique
-  author    User      @relation(fields: [userId], references: [id])
-  comments  Comment[]
-  likes     Like[]
-}
-
-model Comment {
-  id        String   @id
-  createdAt DateTime @default(now())
-  text      String
-  posts     Post     @relation(fields: [postId], references: [id])
-  users     User     @relation(fields: [userId], references: [id])
-  postId    String
-  userId    String
-}
-
-model Like {
-  id        String   @id
-  createdAt DateTime @default(now())
-  posts     Post     @relation(fields: [postId], references: [id])
-  users     User     @relation(fields: [userId], references: [id])
-  postId    String
-  userId    String
+  userId    String   @unique
+  author    User     @relation(fields: [userId], references: [id])
 }
