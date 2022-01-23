@@ -5,40 +5,33 @@
 <script lang="ts">
   import Button from "$lib/components/Button.svelte";
   import Field from "$lib/components/Field.svelte";
-  import Toast from "$lib/components/Toast.svelte";
-  import { auth, register } from "$lib/stores/auth";
-
-  let email = "";
-  let password = "";
+  let submitting = false;
 </script>
 
-<form on:submit|preventDefault={() => register(email, password)}>
+<form
+  action="/api/register"
+  method="post"
+  on:submit={() => (submitting = true)}
+>
   <h2>Register for an account</h2>
   <p>Sign up for an account and share your one thought with the world</p>
 
-  <Field props={{ type: "email", label: "Email" }} bind:value={email} />
+  <Field props={{ type: "email", label: "Email", name: "email" }} value="" />
   <Field
-    props={{ type: "password", label: "Password" }}
-    bind:value={password}
+    props={{ type: "password", label: "Password", name: "password" }}
+    value=""
   />
   <Button
     props={{
       variant: "primary",
       type: "submit",
-      disabled: !email || !password || $auth.loading
+      disabled: submitting
     }}
   >
-    {$auth.loading ? "Creating your account.." : "Register"}
+    {submitting ? "Creating your account.." : "Register"}
   </Button>
   <p>Already have have an account? <a href="/login">Login</a></p>
 </form>
-
-{#if $auth.error.length > 0}
-  <Toast
-    props={{ variant: "error", messsage: $auth.error }}
-    on:dismiss={() => ($auth.error = "")}
-  />
-{/if}
 
 <style>
   form {

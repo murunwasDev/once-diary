@@ -11,7 +11,7 @@
   <label for={props.label}>{props.label}</label>
   {#if props.type === "textarea"}
     <textarea
-      name={props.label}
+      name={props.name}
       id={props.label}
       required={props.required}
       {value}
@@ -20,7 +20,7 @@
   {:else}
     <input
       type={props.type}
-      name={props.label}
+      name={props.name}
       id={props.label}
       required={props.required}
       {value}

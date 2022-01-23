@@ -1,9 +1,12 @@
 <script context="module" lang="ts">
   import type { Load } from "@sveltejs/kit";
-  export const load: Load = ({ session }) => {
+  import { posts, getPosts } from "$lib/stores/posts";
+
+  export const load: Load = async ({ session }) => {
     if (!session) {
       return { status: 307, redirect: "/login" };
     } else {
+      await getPosts({ limit: 2 });
       return { props: { session } };
     }
   };
@@ -11,14 +14,11 @@
 
 <script lang="ts">
   import { greeting } from "$lib/utils/helpers";
-  import { posts, getPosts } from "$lib/stores/posts";
   import Post from "$lib/components/Post.svelte";
   import { chart } from "$lib/actions/chart";
-  import { onMount } from "svelte";
   import Button from "$lib/components/Button.svelte";
 
   export let session: UserSession;
-  onMount(() => getPosts({ limit: 2 }));
 </script>
 
 <section>

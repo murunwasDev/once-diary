@@ -1,15 +1,14 @@
 import type { RequestHandler } from "@sveltejs/kit";
-import { db } from "$lib/utils/db";
+import prisma from "$lib/utils/prisma";
 import argon2 from "argon2";
 import cookie from "cookie";
 import jwt from "jsonwebtoken";
 
-export const post: RequestHandler = async ({ body }) => {
-  const data = JSON.parse(body as string);
-  const email = data.email;
-  const password = data.password;
+export const post: RequestHandler = async ({ request }) => {
+  const body = await request.formData();
+  const { email, password } = Object.fromEntries(body as any);
 
-  const user = await db.user.findFirst({
+  const user = await prisma.user.findFirst({
     where: { email }
   });
   if (user) {
@@ -25,7 +24,7 @@ export const post: RequestHandler = async ({ body }) => {
   }
 
   const hashPassword = await argon2.hash(password);
-  const newUser = await db.user.create({
+  const newUser = await prisma.user.create({
     data: { email, password: hashPassword }
   });
 
@@ -36,8 +35,9 @@ export const post: RequestHandler = async ({ body }) => {
   );
 
   return {
-    status: 200,
+    status: 307,
     headers: {
+      location: "/",
       "set-cookie": cookie.serialize("token", token, {
         httpOnly: true,
         secure: import.meta.env.PROD,

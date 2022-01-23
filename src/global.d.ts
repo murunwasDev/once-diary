@@ -59,4 +59,5 @@ interface FieldProps {
   type: "email" | "password" | "number" | "text" | "date" | "textarea";
   label: string;
   required?: boolean;
+  name?: string;
 }

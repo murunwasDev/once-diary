@@ -26,9 +26,17 @@
   <h2>Share your one and only thought with the world</h2>
   <p>Here you can create your thought and share it with the world</p>
 
-  <Field props={{ type: "text", label: "Title", required: true }} bind:value={title} />
-  <Field props={{ type: "textarea", label: "Content", required: true }} bind:value={content} />
-  <Button props={{ variant: "primary", type: "submit", disabled: $posts.loading }}>
+  <Field
+    props={{ type: "text", label: "Title", required: true }}
+    bind:value={title}
+  />
+  <Field
+    props={{ type: "textarea", label: "Content", required: true }}
+    bind:value={content}
+  />
+  <Button
+    props={{ variant: "primary", type: "submit", disabled: $posts.loading }}
+  >
     {$posts.loading ? "Creating..." : "Create post"}
   </Button>
 </form>
