@@ -4,7 +4,7 @@ import cookie from "cookie";
 import jwt from "jsonwebtoken";
 
 export const handle: Handle = async ({ event, resolve }) => {
-  const { token } = cookie.parse(event.request.headers.get("cookie"));
+  const { token } = cookie.parse(event.request.headers.get("cookie") || "");
   if (!token) return resolve(event);
 
   let data;
